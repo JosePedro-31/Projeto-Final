@@ -1,11 +1,7 @@
 # Funções para extrair texto de documentos
-
 import os
 import PyPDF2
 import docx
-
-# Dictionary to store extracted text with file path as key
-text_data = {}
 
 
 def extract_text_from_pdf(file_path):
@@ -28,23 +24,11 @@ def extract_text_from_txt(file_path):
     with open(file_path, "r") as file:
         return file.read()
 
-def extract_text(file_path):
-    """
-    Extract text from a file and store it in the text_data dictionary
-    
-    Args:
-        file_path (str): Path to the file
-        
-    Returns:
-        str: Extracted text
-        
-    Raises:
-        ValueError: If file format is not supported
-    """
+def extract_text(file_path, text_data):
     # Check if text has already been extracted for this file
     if file_path in text_data:
         return text_data[file_path]
-        
+    
     # Extract text based on file extension
     if file_path.endswith(".pdf"):
         text = extract_text_from_pdf(file_path)
@@ -59,19 +43,12 @@ def extract_text(file_path):
     text_data[file_path] = text
     return text
 
-
+'''
 def get_stored_text(file_path):
-    """
-    Get text from the text_data dictionary if it exists
-    
-    Args:
-        file_path (str): Path to the file
-        
-    Returns:
-        str or None: Extracted text if available, None otherwise
-    """
     return text_data.get(file_path)
 
 def clear_text_data():
-    """Clear all stored text data"""
     text_data.clear()
+'''
+
+#print(extract_text(r"data\docx\Amor é fogo que arde sem se ver.docx"))

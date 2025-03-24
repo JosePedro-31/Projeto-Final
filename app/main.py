@@ -1,10 +1,10 @@
 import os
 import chromadb
+import extractors
 from sentence_transformers import SentenceTransformer
 
 def main():
     print("Inicializando o projeto de análise de padrões de texto...")
-    
     # Inicializar ChromaDB
     client = chromadb.PersistentClient("./chroma_db")
     
