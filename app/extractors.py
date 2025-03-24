@@ -1,12 +1,13 @@
 # Funções para extrair texto de documentos
 
 import os
+import PyPDF2
+import docx
 
 # Dictionary to store extracted text with file path as key
 text_data = {}
 
 def extract_text_from_pdf(file_path):
-    import PyPDF2
     text = ""
     with open(file_path, "rb") as file:
         reader = PyPDF2.PdfFileReader(file)
@@ -16,7 +17,6 @@ def extract_text_from_pdf(file_path):
     return text
 
 def extract_text_from_docx(file_path):
-    import docx
     text = ""
     doc = docx.Document(file_path)
     for paragraphs in doc.paragraphs:
