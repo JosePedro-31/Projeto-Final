@@ -7,6 +7,8 @@ import docx
 # Dictionary to store extracted text with file path as key
 text_data = {}
 
+# o ze come piça
+
 def extract_text_from_pdf(file_path):
     text = ""
     with open(file_path, "rb") as file:
