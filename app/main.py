@@ -69,7 +69,9 @@ def main():
      
     dic = {}
 
-    while True:
+    escolha = None
+
+    while escolha != 0:
 
         escolha = exibir_menu()
         
