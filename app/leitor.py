@@ -20,7 +20,7 @@ def extract_text_from_docx(file_path):
     doc = docx.Document(file_path)
     
     for paragraphs in doc.paragraphs:
-        text += paragraphs.text
+        text += paragraphs.text + "\n" # add a new line after each paragraph
 
     return text
 
@@ -51,8 +51,5 @@ def extract_text(folder_path, text_data):
         text_data[file_path] = text
         
 
-'''
-print(extract_text(r"data\pdf", {}))
-print(extract_text(r"data\txt", {}))
-print(extract_text(r"data\docx", {}))
-'''
+
+
