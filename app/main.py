@@ -1,5 +1,5 @@
-import os
-import sys
+# para formatar o texto português
+# -*- coding: utf-8 -*-
 import chromadb
 import leitor
 from datetime import datetime
@@ -14,6 +14,8 @@ def exibir_menu():
     print('3. Ler arquivos TXT')
     print('4. Ler arquivos DOCX')
     print('5. Ler todos os tipos de arquivos')
+    print('6. Pesquisar')
+    print('7. Eliminar Ficheiro')
     print('0. Sair')
     print('=========================')
 
@@ -21,10 +23,10 @@ def exibir_menu():
     while flag:
         try:
             escolha = int(input("Digite sua opção: "))
-            if 0 <= escolha <= 5:
+            if 0 <= escolha <= 7:
                 flag = False
             else:
-                print("Opção inválida! Por favor, escolha um número entre 0 e 5.")
+                print("Opção inválida! Por favor, escolha um número entre 0 e 7.")
         except ValueError:
             print("Por favor, digite apenas números.")
     return escolha
@@ -50,6 +52,51 @@ def escolher_modelo(lista_de_modelos):
             print("Por favor, digite apenas números.")
 
 
+def adiciona_dados(collection, dic):
+        # Adicionar ficheiros à coleção
+        collection.add(
+            documents=list(dic.values()),  # lista de ficheiros
+            ids=[k for k in dic.keys()]    # ids dos ficheiros
+        )
+        print(f"Foram adicionados {len(dic)} ficheiros.")
+        # Limpar o dicionário para evitar adicionar os mesmos ficheiros novamente
+        dic.clear()
+
+
+def pesquisar(collection):
+    prompt = input("Digite o termo que deseja pesquisar: ")
+    n_resultados = int(input("Quantos resultados deseja obter:  "))
+    print("A pesquisar...")
+    # Realizar a pesquisa
+    results = collection.query(
+        query_texts=[prompt],    # o que o utilizador quer pesquisar                  
+        n_results=n_resultados   # Número de resultados a serem retornados
+    )
+    if results and results.get('documents') and len(results['documents'][0]) > 0:
+        num_results = len(results['documents'][0])
+        for i in range(num_results):
+            doc_text = results['documents'][0][i]
+            distance = results['distances'][0][i]
+            
+            print(f"\n--- Resultado {i+1} ---")
+            print(f"Distância de Similaridade: {distance:.4f}")
+            print(f"\n{doc_text}")
+    else:
+        print("Nenhum resultado encontrado.")
+
+
+def eliminar_dados(collection):
+    ids = collection.get(include=[])
+    for id in ids['ids']:
+        print(id)
+    id = input("Digite o ID do ficheiro que deseja eliminar: ")
+    if id in ids['ids']:
+        collection.delete(ids=[id])
+        print(f"Ficheiro {id} eliminado com sucesso.")
+    else:
+        print(f"Ficheiro {id} não encontrado.")
+
+
 def main():
 
     lista_de_modelos_de_embedding = ["all-MiniLM-L6-v2",
@@ -67,15 +114,16 @@ def main():
     chroma_client = chromadb.Client()
     
     # ERRO por alguma razão se usarmos isto não escreve a opção 2 no print do menu
-    '''
+    
     embedder = embedding_functions.SentenceTransformerEmbeddingFunction(
-    model_name="all-MiniLM-L6-v2",
+    model_name="all-MiniLM-L6-v2"
     )
-    '''
+    
 
     # cria a coleção "my_collection" 
     collection = chroma_client.get_or_create_collection(
         name="my_collection",
+        embedding_function=embedder, # modelo de embedding
         metadata={
         "description": "my first Chroma collection",
         "created": str(datetime.now())
@@ -102,45 +150,30 @@ def main():
             case 2:
                 print("A ler ficheiros PDF...")
                 leitor.extract_text(r"data\pdf", dic)
-                print(f"Foram adicionados {len(dic)} ficheiros.")
-                                
+                adiciona_dados(collection, dic)
+                
             case 3:
                 print("A ler ficheiros TXT...")
                 leitor.extract_text(r"data\txt", dic)
-                print(f"Foram adicionados {len(dic)} ficheiros.")
+                adiciona_dados(collection, dic)
                 
             case 4:
                 print("A ler ficheiros DOCX...")
                 leitor.extract_text(r"data\docx", dic)
-                print(f"Foram adicionados {len(dic)} ficheiros.")
+                adiciona_dados(collection, dic)
                 
             case 5:
                 print("A ler todos os tipos de ficheiros...")
                 leitor.extract_text(r"data\pdf", dic)
                 leitor.extract_text(r"data\txt", dic)
                 leitor.extract_text(r"data\docx", dic)
-                print(f"Foram adicionados {len(dic)} ficheiros.")
-
+                adiciona_dados(collection, dic)
+            
+            case 6:
+                pesquisar(collection)
+                
+            case 7:
+                eliminar_dados(collection)
         
-        
-        # Adicionar ficheiros à coleção
-        collection.add(
-            documents=list(dic.values()),  # lista de ficheiros
-            ids=[k for k in dic.keys()]    # ids dos ficheiros
-        )
-
-        prompt = input("Digite o termo que deseja pesquisar: ")
-        n_resultados = int(input("Quantos resultados deseja obter:  "))
-
-        # Realizar a pesquisa
-        results = collection.query(
-            query_texts=[prompt],    # o que o utilizador quer pesquisar                  
-            n_results=n_resultados   # Número de resultados a serem retornados
-        )
-        
-        # Exibir resultados
-        print("\nResultados da pesquisa:")
-        print(results)
-
 
 main()
