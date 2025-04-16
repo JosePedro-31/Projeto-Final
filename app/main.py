@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import chromadb
 import leitor
+import time
 from datetime import datetime
 from chromadb.utils import embedding_functions
 
@@ -67,11 +68,20 @@ def pesquisar(collection):
     prompt = input("Digite o termo que deseja pesquisar: ")
     n_resultados = int(input("Quantos resultados deseja obter:  "))
     print("A pesquisar...")
+
+    # Iniciar cronómetro para medir o tempo de pesquisa
+    start_time = time.perf_counter()
     # Realizar a pesquisa
     results = collection.query(
         query_texts=[prompt],    # o que o utilizador quer pesquisar                  
         n_results=n_resultados   # Número de resultados a serem retornados
     )
+    # Parar o cronómetro
+    end_time = time.perf_counter()
+    query_time = end_time - start_time
+    print(f"Modelo de Embedding: distiluse-base-multilingual-cased-v2\nTempo de pesquisa: {query_time:.4f} segundos")
+
+
     if results and results.get('documents') and len(results['documents'][0]) > 0:
         num_results = len(results['documents'][0])
         for i in range(num_results):
@@ -116,7 +126,7 @@ def main():
     # ERRO por alguma razão se usarmos isto não escreve a opção 2 no print do menu
     
     embedder = embedding_functions.SentenceTransformerEmbeddingFunction(
-    model_name="all-MiniLM-L6-v2"
+    model_name="distiluse-base-multilingual-cased-v2"
     )
     
 
