@@ -19,7 +19,7 @@ def exibir_menu():
     print('6. Pesquisar')
     print('7. Eliminar Ficheiro')
     print('0. Sair')
-    print('=========================')
+    print('============================================')
 
     flag = True
     while flag:
@@ -77,7 +77,7 @@ def pesquisar(collection):
         except ValueError:
             print("Por favor, escreva apenas números.")
             
-    print("A pesquisar...")
+    print("============================================\nA pesquisar...")
 
     # Iniciar cronómetro para medir o tempo de pesquisa
     start_time = time.perf_counter()
@@ -104,7 +104,7 @@ def pesquisar(collection):
         
         leave = False
         while not leave:
-            print(f"--- Pesquisas encontradas ---\n")   
+            print(f"\n--- Pesquisas encontradas ---\n")   
             j = 0 
             for title in titles:
                 print(f"--- Resultado {j+1} ---")
@@ -120,7 +120,7 @@ def pesquisar(collection):
                 try:
                     choice = int(choice) - 1  # Ajustar para índice 0
                     if 0 <= choice < num_results:
-                        print("=========================\n")
+                        print("============================================\n")
                         print(f"Conteúdo do Resultado {choice + 1}:")
                         print(f"Ficheiro: {titles[choice]}")
                         print(f"{doc_text[choice]}\n\n")
