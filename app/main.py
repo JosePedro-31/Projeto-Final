@@ -5,6 +5,7 @@ import leitor
 import time
 from datetime import datetime
 from chromadb.utils import embedding_functions
+import os
 
 
 def exibir_menu():
@@ -66,7 +67,16 @@ def adiciona_dados(collection, dic):
 
 def pesquisar(collection):
     prompt = input("Digite o termo que deseja pesquisar: ")
-    n_resultados = int(input("Quantos resultados deseja obter:  "))
+    while True:
+        try:
+            n_resultados = int(input("Quantos resultados deseja obter:  "))
+            if n_resultados <= 0:
+                print("O número de resultados deve ser maior que zero.")
+            else:
+                break
+        except ValueError:
+            print("Por favor, escreva apenas números.")
+            
     print("A pesquisar...")
 
     # Iniciar cronómetro para medir o tempo de pesquisa
@@ -81,16 +91,44 @@ def pesquisar(collection):
     query_time = end_time - start_time
     print(f"Modelo de Embedding: all-MiniLM-L6-v2\nTempo de pesquisa: {query_time:.4f} segundos")
 
-
     if results and results.get('documents') and len(results['documents'][0]) > 0:
         num_results = len(results['documents'][0])
+        doc_text = []
+        titles = []
+        distance = []
         for i in range(num_results):
-            doc_text = results['documents'][0][i]
-            distance = results['distances'][0][i]
-            
-            print(f"\n--- Resultado {i+1} ---")
-            print(f"Distância de Similaridade: {distance:.4f}")
-            print(f"\n{doc_text}")
+            doc_text.append(results['documents'][0][i])
+            distance.append(results['distances'][0][i])
+            doc_id_path = results['ids'][0][i]
+            titles.append(os.path.basename(doc_id_path))
+        
+        leave = False
+        while not leave:
+            print(f"--- Pesquisas encontradas ---\n")   
+            j = 0 
+            for title in titles:
+                print(f"--- Resultado {j+1} ---")
+                print(f"Ficheiro: {title}")
+                print(f"Distância de Similaridade: {distance[j]:.4f}\n")
+                j += 1
+                
+            print("Escolha um resultado para ver o conteúdo ou escreva 0 para sair.")
+            choice = input("Digite o número do resultado desejado: ")
+            if choice == '0':
+                leave = True
+            else:
+                try:
+                    choice = int(choice) - 1  # Ajustar para índice 0
+                    if 0 <= choice < num_results:
+                        print("=========================\n")
+                        print(f"Conteúdo do Resultado {choice + 1}:")
+                        print(f"Ficheiro: {titles[choice]}")
+                        print(f"{doc_text[choice]}\n\n")
+                        
+                    else:
+                        print("Opção inválida!")
+                except ValueError:
+                    print("Por favor, escreva apenas números.")
     else:
         print("Nenhum resultado encontrado.")
 
