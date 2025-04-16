@@ -79,7 +79,7 @@ def pesquisar(collection):
     # Parar o cronómetro
     end_time = time.perf_counter()
     query_time = end_time - start_time
-    print(f"Modelo de Embedding: distiluse-base-multilingual-cased-v2\nTempo de pesquisa: {query_time:.4f} segundos")
+    print(f"Modelo de Embedding: all-MiniLM-L6-v2\nTempo de pesquisa: {query_time:.4f} segundos")
 
 
     if results and results.get('documents') and len(results['documents'][0]) > 0:
@@ -126,7 +126,7 @@ def main():
     # ERRO por alguma razão se usarmos isto não escreve a opção 2 no print do menu
     
     embedder = embedding_functions.SentenceTransformerEmbeddingFunction(
-    model_name="distiluse-base-multilingual-cased-v2"
+    model_name="all-MiniLM-L6-v2"
     )
     
 
