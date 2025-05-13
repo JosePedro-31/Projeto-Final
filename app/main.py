@@ -215,11 +215,14 @@ def main():
                 print("A ler todos os tipos de ficheiros...")
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                 leitor.extract_text(r"data\pdf", dados)
                 leitor.extract_text(r"data\txt", dados)
                 leitor.extract_text(r"data\docx", dados)
                 adiciona_dados(collection, dados)
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                 leitor.extract_text(r"data/pdf", dic)  
