@@ -1,32 +1,21 @@
-# Usar uma imagem Python oficial como base
-FROM python:3.9-slim
+FROM python:3.11-buster
 
-# Definir o diretório de trabalho
-WORKDIR /app
-
-# Instalar dependências para textract e outras bibliotecas
-RUN apt-get update && apt-get install -y \
+# Atualiza o sistema e instala dependências do sistema
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    sqlite3 libsqlite3-dev \
     build-essential \
-    libpoppler-cpp-dev \
-    pkg-config \
-    python3-dev \
-    tesseract-ocr \
-    libtesseract-dev \
-    antiword \
-    unrtf \
-    poppler-utils \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar os ficheiros de requisitos e instalar
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copia os arquivos do projeto
+COPY app /app
+COPY data /app/data
+COPY requirements.txt /app/requirements.txt
 
-# Copiar o resto do código da aplicação
-COPY ./app /app
+# Define o diretório de trabalho
+WORKDIR /app
 
-# Definir o volume para os dados
-VOLUME ["/app/data"]
+# Instala as dependências do Python
+RUN pip install -r requirements.txt
 
 # Comando para executar a aplicação
 CMD ["python", "main.py"]

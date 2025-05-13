@@ -1,4 +1,6 @@
-chromadb
-sentence-transformers
+chromadb==0.4.18
+sentence-transformers==2.2.2 
 PyPDF2
-docx
+python-docx
+numpy  
+tqdm   

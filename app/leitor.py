@@ -35,7 +35,7 @@ def extract_text(folder_path, text_data):
     file_names = os.listdir(folder_path)
     for name in file_names:
         # Get the full path of the file
-        file_path = folder_path + "\\" + name    
+        file_path = os.path.join(folder_path, name)
         
         # Extract text based on file extension
         if file_path.endswith(".pdf"):

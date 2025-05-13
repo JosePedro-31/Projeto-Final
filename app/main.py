@@ -158,15 +158,16 @@ def main():
                                     "distiluse-base-multilingual-cased-v1",
                                     "distiluse-base-multilingual-cased-v2"]
 
-    # cria o cliente ChromaDB
-    chroma_client = chromadb.Client()
+    # Conectar ao ChromaDB no container
+    chroma_client = chromadb.Client(
+        chromadb.config.Settings(chroma_server_host="chroma", chroma_server_http_port="8000")
+    )
     
     # ERRO por alguma razão se usarmos isto não escreve a opção 2 no print do menu
     
     embedder = embedding_functions.SentenceTransformerEmbeddingFunction(
     model_name="all-MiniLM-L6-v2"
     )
-    
 
     # cria a coleção "my_collection" 
     collection = chroma_client.get_or_create_collection(
@@ -212,10 +213,17 @@ def main():
                 
             case 5:
                 print("A ler todos os tipos de ficheiros...")
+<<<<<<< Updated upstream
                 leitor.extract_text(r"data\pdf", dados)
                 leitor.extract_text(r"data\txt", dados)
                 leitor.extract_text(r"data\docx", dados)
                 adiciona_dados(collection, dados)
+=======
+                leitor.extract_text(r"data/pdf", dic)  
+                leitor.extract_text(r"data/txt", dic)
+                leitor.extract_text(r"data/docx", dic)
+                adiciona_dados(collection, dic)
+>>>>>>> Stashed changes
             
             case 6:
                 pesquisar(collection)
