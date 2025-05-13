@@ -54,15 +54,15 @@ def escolher_modelo(lista_de_modelos):
             print("Por favor, digite apenas números.")
 
 
-def adiciona_dados(collection, dic):
+def adiciona_dados(collection, dados):
         # Adicionar ficheiros à coleção
         collection.add(
-            documents=list(dic.values()),  # lista de ficheiros
-            ids=[k for k in dic.keys()]    # ids dos ficheiros
+            documents=list(dados.values()),  # lista de ficheiros
+            ids=[k for k in dados.keys()]    # ids dos ficheiros
         )
-        print(f"Foram adicionados {len(dic)} ficheiros.")
+        print(f"Foram adicionados {len(dados)} ficheiros.")
         # Limpar o dicionário para evitar adicionar os mesmos ficheiros novamente
-        dic.clear()
+        dados.clear()
 
 
 def pesquisar(collection):
@@ -178,7 +178,7 @@ def main():
         } 
     )
      
-    dic = {}
+    dados = {}  # Dicionário para armazenar os ficheiros lidos temporariamente
 
     escolha = None
 
@@ -197,25 +197,25 @@ def main():
             
             case 2:
                 print("A ler ficheiros PDF...")
-                leitor.extract_text(r"data\pdf", dic)
-                adiciona_dados(collection, dic)
+                leitor.extract_text(r"data\pdf", dados)
+                adiciona_dados(collection, dados)
                 
             case 3:
                 print("A ler ficheiros TXT...")
-                leitor.extract_text(r"data\txt", dic)
-                adiciona_dados(collection, dic)
+                leitor.extract_text(r"data\txt", dados)
+                adiciona_dados(collection, dados)
                 
             case 4:
                 print("A ler ficheiros DOCX...")
-                leitor.extract_text(r"data\docx", dic)
-                adiciona_dados(collection, dic)
+                leitor.extract_text(r"data\docx", dados)
+                adiciona_dados(collection, dados)
                 
             case 5:
                 print("A ler todos os tipos de ficheiros...")
-                leitor.extract_text(r"data\pdf", dic)
-                leitor.extract_text(r"data\txt", dic)
-                leitor.extract_text(r"data\docx", dic)
-                adiciona_dados(collection, dic)
+                leitor.extract_text(r"data\pdf", dados)
+                leitor.extract_text(r"data\txt", dados)
+                leitor.extract_text(r"data\docx", dados)
+                adiciona_dados(collection, dados)
             
             case 6:
                 pesquisar(collection)
