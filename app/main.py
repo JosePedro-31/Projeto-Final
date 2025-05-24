@@ -217,11 +217,7 @@ def main():
                 leitor.extract_text(r"data\txt", dados)
                 leitor.extract_text(r"data\docx", dados)
                 adiciona_dados(collection, dados)
-                leitor.extract_text(r"data/pdf", dic)  
-                leitor.extract_text(r"data/txt", dic)
-                leitor.extract_text(r"data/docx", dic)
-                adiciona_dados(collection, dic)
-            
+        
             case 6:
                 pesquisar(collection)
                 
