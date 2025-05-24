@@ -1,1 +1,0 @@
-# Funções para processamento e clustering
