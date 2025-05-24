@@ -173,10 +173,6 @@ def main():
     collection = chroma_client.get_or_create_collection(
         name="my_collection",
         embedding_function=embedder, # modelo de embedding
-        metadata={
-        "description": "my first Chroma collection",
-        "created": str(datetime.now())
-        } 
     )
      
     dados = {}  # Dicionário para armazenar os ficheiros lidos temporariamente
